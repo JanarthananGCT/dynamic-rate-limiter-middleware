@@ -1,4 +1,4 @@
-const Hit = require('./models/Hit'); // Assuming a Hit model will be created
+// const Hit = require('./models/Hit'); // Assuming a Hit model will be created
 
 const rateLimiter = async (req, res, next) => {
     // Logic to check and manage API hits

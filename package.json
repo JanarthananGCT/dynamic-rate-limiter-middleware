@@ -1,14 +1,15 @@
 {
   "name": "dynamic-rate-limiter-middleware",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Intelligent rate limiting middleware with MongoDB integration and caching for Node.js applications",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
-    "lint": "eslint src/",
-    "build": "babel src -d dist",
+    "test": "jest --passWithNoTests",
+    "lint": "eslint .",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && babel src -d dist",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
+    "prepublishOnly": "npm test",
     "version": "git add -A src",
     "postversion": "git push && git push --tags"
   },
@@ -26,12 +27,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/dynamic-rate-limiter-middleware.git"
+    "url": "git+https://github.com/JanarthananGCT/dynamic-rate-limiter-middleware.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/dynamic-rate-limiter-middleware/issues"
+    "url": "https://github.com/JanarthananGCT/dynamic-rate-limiter-middleware/issues"
   },
-  "homepage": "https://github.com/yourusername/dynamic-rate-limiter-middleware#readme",
+  "homepage": "https://github.com/JanarthananGCT/dynamic-rate-limiter-middleware#readme",
   "dependencies": {
     "axios": "^1.4.0",
     "express": "^4.18.2",

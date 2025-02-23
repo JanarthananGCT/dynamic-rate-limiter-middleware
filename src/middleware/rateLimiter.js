@@ -19,6 +19,7 @@ function createRateLimiter(options = {}) {
         const startTime = Date.now();
         const endpoint = req.path;
         const method = req.method;
+        let hit = null; // Declare hit outside try block
 
         try {
             // Get or create API configuration
@@ -37,14 +38,13 @@ function createRateLimiter(options = {}) {
             }
 
             // Get or create hit record
-            let hit = await Hit.findOne({ endpoint, method });
-            if (!hit) {
-                hit = new Hit({
-                    endpoint,
-                    method,
-                    dailyLimit: apiConfig.rateLimit.daily
-                });
-            }
+            hit = new Hit({
+                userId: req.user ? req.user.id : null,
+                endpoint,
+                method,
+                dailyLimit: apiConfig.rateLimit.daily
+            });
+            await hit.save();
 
             // Check cache first
             const cacheKey = CacheManager.generateKey(endpoint, req.query);
@@ -126,12 +126,17 @@ function createRateLimiter(options = {}) {
             });
 
         } catch (error) {
-            // Record error
+            // Record error only if hit exists
             if (hit) {
-                await hit.recordError(
-                    error.response?.status || 500,
-                    error.message
-                );
+                try {
+                    await hit.recordError(
+                        error.response?.status || 500,
+                        error.message
+                    );
+                } catch (recordError) {
+                    // Silently handle error recording failure
+                    console.error('Failed to record error:', recordError);
+                }
             }
 
             // Handle errors
@@ -144,16 +149,21 @@ function createRateLimiter(options = {}) {
             };
 
             // Try to use fallback response if configured
-            const apiConfig = await ApiConfig.findByEndpoint(endpoint, method);
-            if (apiConfig?.errorHandling.fallbackResponse) {
-                return res.status(status).json({
-                    ...apiConfig.errorHandling.fallbackResponse,
-                    source: 'fallback',
-                    originalError: errorResponse
-                });
+            try {
+                const apiConfig = await ApiConfig.findByEndpoint(endpoint, method);
+                if (apiConfig?.errorHandling.fallbackResponse) {
+                    return res.status(status).json({
+                        ...apiConfig.errorHandling.fallbackResponse,
+                        source: 'fallback',
+                        originalError: errorResponse
+                    });
+                }
+            } catch (configError) {
+                // If we can't get the config, continue to default error handling
+                console.error('Failed to get API config for fallback:', configError);
             }
 
-            return res.status(status).json(errorResponse);
+            next(error);
         }
     };
 }

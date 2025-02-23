@@ -80,51 +80,6 @@ await mongoose.connect('mongodb://your-mongodb-url/dbname');
 const rateLimiter = await RateLimiterMiddleware();
 ```
 
-## Publishing to NPM
-
-To publish this package to NPM:
-
-1. **Prepare the Package**:
-   ```bash
-   # Update package.json with your details
-   npm init
-   
-   # Install development dependencies
-   npm install
-   
-   # Run tests
-   npm test
-   
-   # Run linting
-   npm run lint
-   ```
-
-2. **Login to NPM**:
-   ```bash
-   npm login
-   ```
-
-3. **Publish the Package**:
-   ```bash
-   # For first-time publishing
-   npm publish
-   
-   # For subsequent updates
-   npm version patch|minor|major
-   npm publish
-   ```
-
-4. **Update the Package**:
-   ```bash
-   # Update version
-   npm version patch  # for bug fixes
-   npm version minor  # for new features
-   npm version major  # for breaking changes
-   
-   # Publish update
-   npm publish
-   ```
-
 ## Configuration Options
 
 ```javascript
