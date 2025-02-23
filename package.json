@@ -1,0 +1,64 @@
+{
+  "name": "dynamic-rate-limiter-middleware",
+  "version": "1.0.0",
+  "description": "Intelligent rate limiting middleware with MongoDB integration and caching for Node.js applications",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src/",
+    "build": "babel src -d dist",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [
+    "rate-limiting",
+    "api-cache",
+    "middleware",
+    "mongodb",
+    "nodejs",
+    "express",
+    "dynamic-rate-limit",
+    "api-management"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/dynamic-rate-limiter-middleware.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/dynamic-rate-limiter-middleware/issues"
+  },
+  "homepage": "https://github.com/yourusername/dynamic-rate-limiter-middleware#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.1",
+    "node-cache": "^5.1.2",
+    "moment-timezone": "^0.5.43",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "eslint": "^8.42.0",
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22"
+  },
+  "peerDependencies": {
+    "express": ">=4.0.0",
+    "mongoose": ">=6.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md"
+  ]
+}
